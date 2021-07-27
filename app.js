@@ -5,8 +5,7 @@ require("dotenv").config();
 
 const PORT = 5000;
 
-const Db = mongoose.connect(
-  process.env.DB_URL,
+const Db = mongoose.connect("mongodb+srv://mabelDB:mabel6723@cluster0.k29nd.mongodb.net/inventory2?retryWrites=true&w=majority",
   { useNewUrlParser: true, useUnifiedTopology: true },
   () => {
     console.log("connected to db"),
@@ -23,6 +22,6 @@ app.use(express.json());
 
 // // Set routes
 app.use("/api/products", productRoute);
-app.use("/api", userRoute);
+app.use("/api/user", userRoute);
 
 console.log("Waiting for database...");
