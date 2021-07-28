@@ -16,8 +16,6 @@ const getUser = async (req, res) => {
 const signup = async(req, res, next) => {
   try {
   let { firstName, lastName, email, password} = req.body
-
-
   // validation
   const checkEmail = await User.findOne({ email });
   if (checkEmail) {
@@ -60,6 +58,52 @@ next();
 }
 
 // login for already created users
-const signIn = async (req, res) => {};
+const signIn = async (req, res) => {
+  try {
+  const user = await User.findOne({ email: req.body.email });
+  if (!user) return res.json({
+          status: "failed",
+          msg: "email does not exist"
+      })
+// verify user password
+      const validPassword = await bcrypt.compare (req.body.password, User.password)
+      if(!validPassword) return res.status(400).json({msg: "Incorrect password"})
+      // generate token
+      const token = await jwt.sign({_id: user._id}, process.env.JWT_SECRET)
+      res.status(201).json({status: "success", token,
+   msg: "You have successfully logged in",
+   data: {
+     id: user._id,
+     firstName: user.firstName,
+     lastName: user.lastName,
+     email: user.email
+   }
+      });
+    } catch(err) {
+    console.log(err)
+    res.json({err})
+    }
+  }
 
-module.exports = { signup, signIn, getUser };
+// Reset password
+   const changePassword = async (req, res) => {
+  try{
+    const userId = req.user._id;
+    if(userId !== req.params.id) {
+      return res.status(400).json({success: false, msg: "Invalid id"})
+    }
+    const password = await bcrypt.hash(req.body.password, 12)
+    const user = await User.findOneAndUpdate({_id: req.params.id}, {password: password}, {new:true});
+    await user.save();
+    return res.status(200).json({
+      status: true, 
+      msg: "Password successfully changed"
+    })
+  } catch(err) {
+    console.log(err)
+    return res.status(400).json({status: false, error: "error occured"})
+  }
+}
+
+
+module.exports = { signup, signIn, changePassword, getUser };
