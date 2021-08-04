@@ -24,10 +24,21 @@ const signup = async (req, res) => {
 
     const password = await bcrypt.hash(req.body.password, 12);
 
-    const newUser = { ...req.body, password };
+    const newUser = { 
+      firstName,
+      lastName, 
+      email,
+      password };
     user = new users(newUser);
     await user.save();
-    res.status(200).json({ msg: `User successfully created`, data: user });
+    res.status(200).json({ msg: `User successfully created`, 
+    data: {
+      id: user._id,
+      firstName,
+     lastName, 
+     email
+    }
+  })
   } catch (err) {
     res.status(400).send(err);
     console.log(err);

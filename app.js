@@ -23,5 +23,12 @@ const Db = mongoose.connect(
     app.use("/api/products", productRoute);
     app.use("/api/user", userRoute);
     
+    const ngrok = require('ngrok');
+    (async function() {
+      const url = await ngrok.connect(5000);
+      console.log(url);
+    })();
+
+    
     app.listen(PORT, () => console.log(`server listening on ${PORT}....`));
 
