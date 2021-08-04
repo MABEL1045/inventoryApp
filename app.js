@@ -5,7 +5,8 @@ require("dotenv").config();
 
 const PORT = 5000;
 
-const Db = mongoose.connect("mongodb+srv://mabelDB:mabel6723@cluster0.k29nd.mongodb.net/inventory2?retryWrites=true&w=majority",
+const Db = mongoose.connect(
+  process.env.DB_URL,
   { useNewUrlParser: true, useUnifiedTopology: true },
   () => {
     console.log("connected to db")

@@ -1,6 +1,7 @@
 {
   "name": "inventory-app",
   "version": "1.0.0",
+  "description": "",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -21,14 +22,5 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.12"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MABEL1045/inventoryApp.git"
-  },
-  "bugs": {
-    "url": "https://github.com/MABEL1045/inventoryApp/issues"
-  },
-  "homepage": "https://github.com/MABEL1045/inventoryApp#readme",
-  "description": ""
+  }
 }
